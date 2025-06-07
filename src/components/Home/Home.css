@@ -1,0 +1,610 @@
+/*
+  Copiado diretamente do seu arquivo home.css.
+  Nenhuma alteração foi necessária aqui.
+*/
+
+.homepage-container {
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Adicionado para evitar scroll horizontal */
+}
+
+.section {
+  width: 100vw;
+  background: #fff;
+  margin: 0 auto;
+}
+
+.header-section {
+  position: fixed;
+  width: 100vw;
+  max-width: 100vw;
+  top: 0;
+  left: 0;
+  min-width: 320px;
+  height: 101px;
+  background: #f5f7fa;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-left: 80px;
+  padding-right: 80px;
+  z-index: 1000;
+}
+
+/* Logo */
+.header-logo {
+  width: 145px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+}
+
+/* Menu Central */
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  color: #000;
+  background: transparent;
+}
+
+.header-nav button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Login e SingUp */
+.header-login-frame {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Login Botão */
+.header-login-btn {
+  width: 104px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 24px;
+  color: #7fa66f;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* SingUp Botão */
+.header-signup-btn {
+  width: 104px;
+  height: 40px;
+  border-radius: 6px;
+  background-color: #7fa66f;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.header-signup-btn:hover {
+  background-color: #6d925f;
+}
+
+/* Hero Section */
+.hero-section {
+  margin-top: 101px; /* Altura do Header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  padding-left: 0px;
+  height: 700px;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 80px;
+}
+
+.hero-slogan {
+  font-weight: 600;
+  font-size: 80px;
+  line-height: 90px;
+  color: #000;
+  margin: 0 0 12px 0;
+}
+
+.slogan-highlight {
+  color: #7FA66F;
+}
+
+.hero-subtitle {
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  margin-bottom: 32px;
+  margin-top: 16px;
+  max-width: 1500px;
+  line-height: 1.5;
+}
+
+.hero-saiba-mais {
+  width: 179px;
+  height: 78px;
+  background-color: #7FA66F;
+  color: #fff;
+  font-weight: 500;
+  font-size: 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-saiba-mais:hover {
+  background-color: #6d925f;
+}
+
+/* Frame direita da imagem */
+.hero-image-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 300px;
+  min-height: 240px;
+}
+
+.hero-image {
+  max-width: 100%;
+  max-height: 519px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Sobre Section */
+.sobre-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+  min-height: 536px;
+}
+
+.container-sobre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 113px;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.imagem-sobre {
+  width: 512px;
+  height: auto;
+}
+
+.texto-sobre {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 500px;
+}
+
+.texto-sobre h2 {
+  font-weight: 600;
+  font-size: 36px;
+  color: #4D4D4D;
+  margin-bottom: 10px;
+}
+
+.texto-sobre p {
+  font-weight: 400;
+  font-size: 14px;
+  color: #4D4D4D;
+  margin-bottom: 20px;
+}
+
+.botao-saiba-mais {
+  width: 147px;
+  height: 52px;
+  background-color: #7FA66F;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+
+.botao-saiba-mais:hover {
+  background-color: #6C9461;
+}
+
+/* Funcionalidades Section */
+.funcionalidades-section {
+  max-width: 100vw;
+  padding: 40px 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.funcionalidades-section .titulo {
+  font-weight: 600;
+  font-size: 36px;
+  color: #4D4D4D;
+  margin-bottom: 40px;
+}
+
+.caixas-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px; /* Reduzido para melhor ajuste */
+  padding: 0 20px;
+  margin-top: 40px;
+}
+
+.caixa {
+  width: 300px; /* Levemente reduzido */
+  height: 282px;
+  border-radius: 8px;
+  background-color: #F5F7FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.icone {
+  margin-top: 24px;
+  width: 65px;
+  height: 56px;
+  margin-bottom: 8px;
+}
+
+.funcionalidade {
+  font-weight: 700;
+  font-size: 24px; /* Ajustado */
+  color: #4D4D4D;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.descricao {
+  font-weight: 400;
+  font-size: 14px;
+  color: #4D4D4D;
+  text-align: center;
+}
+
+/* Preços Section */
+.precos-section {
+  background-color: #F5F7FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.precos-section .titulo {
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 1.0;
+}
+
+.precos-section .titulo h2 {
+  font-weight: 600;
+  font-size: 64px;
+  color: #4D4D4D;
+  margin: 0;
+}
+
+.precos-section .titulo .verde {
+  color: #7FA66F;
+}
+
+.imagem-precos {
+  max-width: 80%;
+  width: 800px;
+  height: auto;
+}
+
+/* Contato Section */
+.contato-section {
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding: 60px 20px;
+}
+
+.imagem-contato {
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imagem-contato img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+.texto-contato {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.texto-contato h2 {
+  font-weight: 600;
+  font-size: 40px;
+  color: #4D4D4D;
+}
+
+.informacoes-contato {
+  flex: 2 1 400px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.informacao-contato {
+  display: flex;
+  align-items: center;
+  width: 250px; /* Largura fixa para melhor alinhamento */
+}
+
+.informacao-contato img {
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+}
+
+.informacao-contato span {
+  font-weight: 700;
+  font-size: 20px;
+  color: #4D4D4D;
+}
+
+/* Frase de Efeito Section */
+.frase-efeito-section {
+  background-color: #F5F7FA;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+}
+
+.frase-efeito {
+  font-weight: 600;
+  font-size: 54px; /* Ajustado */
+  color: #404B50;
+  text-align: center;
+  margin-bottom: 20px;
+  max-width: 900px;
+}
+
+.frase-efeito-section .botao-saiba-mais { /* Seletor mais específico */
+  width: 172px;
+  height: 58px;
+  background-color: #7FA66F;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+.frase-efeito-section .botao-saiba-mais:hover {
+  background-color: #6C9461;
+}
+
+/* Rodapé Section */
+.rodape-section {
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 30px 70px;
+}
+
+.logo-rodape img {
+  width: 247px;
+  height: 77px;
+}
+
+.logo-rodape p {
+  font-weight: 400;
+  font-size: 15px;
+  color: #404B50;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.icones-rodape {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.icone-rodape {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.icone-rodape img {
+  width: 36px;
+  height: 40px;
+}
+
+/* --- Media Queries (Responsividade) --- */
+
+@media (max-width: 1200px) {
+  .hero-slogan {
+    font-size: 50px;
+    line-height: 1.1;
+  }
+  .hero-content {
+    padding-left: 40px;
+  }
+}
+
+@media (max-width: 992px) {
+  .header-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .header-nav {
+    display: none; /* Oculta o menu em telas menores - considere um menu hambúrguer */
+  }
+  .hero-section {
+    flex-direction: column-reverse;
+    text-align: center;
+    height: auto;
+    padding: 40px 20px;
+  }
+  .hero-content {
+    align-items: center;
+    padding-left: 0;
+  }
+  .hero-image {
+    max-height: 300px;
+    margin-bottom: 20px;
+  }
+  .container-sobre {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 40px;
+  }
+  .imagem-sobre {
+    width: 100%;
+    max-width: 400px;
+    margin-left: 0;
+  }
+  .texto-sobre {
+    align-items: center;
+    text-align: center;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .titulo h2, .precos-section .titulo h2 {
+    font-size: 48px;
+  }
+  .frase-efeito {
+    font-size: 48px;
+  }
+  .imagem-precos {
+    max-width: 90%;
+  }
+  .contato-section {
+    text-align: center;
+  }
+  .informacoes-contato {
+    justify-content: center;
+  }
+  .rodape-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .logo-rodape {
+    margin-left: 0;
+  }
+  .icones-rodape {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-slogan {
+    font-size: 36px;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+  }
+  .hero-saiba-mais {
+    width: 150px;
+    height: 60px;
+    font-size: 18px;
+  }
+  .texto-sobre h2 {
+    font-size: 28px;
+  }
+  .texto-sobre p {
+    font-size: 14px;
+  }
+  .titulo h2, .precos-section .titulo h2 {
+    font-size: 36px;
+  }
+  .funcionalidade {
+    font-size: 22px;
+  }
+  .frase-efeito {
+    font-size: 32px;
+  }
+  .logo-rodape img {
+    width: 200px;
+    height: auto;
+  }
+}
