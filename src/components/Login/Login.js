@@ -33,8 +33,6 @@ function Login() {
         setLoading(false);
     };
       
-    // CORREÇÃO: O primeiro bloco 'return' foi removido.
-    // O return único e final do componente começa aqui, com seu layout completo.
     return (
         <div className="background" id="login-background">
             <div className="frame-login">

@@ -12,6 +12,8 @@ import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import SignUp from './components/Signup/Signup'; 
 import Dashboard from './components/Dashboard/Dashboard';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 
 import './App.css'; 
 
@@ -55,6 +57,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* 5. LÓGICA DA ROTA PROTEGIDA 
           - Se 'session' existir (usuário logado), renderiza o <Dashboard />.
