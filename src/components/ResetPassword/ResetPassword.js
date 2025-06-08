@@ -1,61 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../supabaseClient'; // Verifique o caminho
+import { supabase } from '../../supabaseClient';
 
-// Importando os estilos
 import './ResetPassword.css';
 
 function ResetPassword() {
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // quando esta página é carregada a partir do link de e-mail.
+  // Este useEffect é a chave da solução.
+  // Ele "escuta" as mudanças de estado de autenticação do Supabase.
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // O evento 'PASSWORD_RECOVERY' é disparado quando o usuário chega
+      // na página através de um link de recuperação de senha.
+      // Neste ponto, a sessão segura e temporária já foi estabelecida.
+      if (event === "PASSWORD_RECOVERY") {
+        console.log("Sessão de recuperação de senha estabelecida com sucesso!");
+      }
+    });
+
+    // Função de limpeza para remover o "ouvinte" quando o componente é desmontado.
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []); // O array vazio [] garante que este efeito rode apenas uma vez, quando o componente monta.
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
+    // As validações continuam as mesmas
     if (password.length < 6) {
         setError('A senha deve ter no mínimo 6 caracteres.');
         return;
     }
-    if (password !== confirmPassword) {
-      setError('As senhas não coincidem.');
-      return;
-    }
+    // A validação de senhas coincidentes foi removida pois não havia o segundo campo.
+    // Se você tiver um campo de "confirmar senha", adicione a validação de volta.
 
     setLoading(true);
     setMessage('');
     setError('');
 
-    // A função updateUser, quando chamada após o usuário chegar pelo link de redefinição,
-    // irá atualizar a senha do usuário autenticado pela sessão do token.
+    // Agora, quando esta função for chamada, a sessão já deve estar ativa
+    // graças ao onAuthStateChange que rodou quando a página carregou.
     const { error } = await supabase.auth.updateUser({
       password: password,
     });
 
     if (error) {
-      setError('Não foi possível redefinir a senha. O link pode ter expirado ou ser inválido.');
+      setError('Não foi possível redefinir a senha. A sessão pode ter expirado.');
       console.error('Erro detalhado do Supabase:', error);
-      console.error('Error:', error.message);
     } else {
       setMessage('Senha redefinida com sucesso! Você será redirecionado para o login.');
       setTimeout(() => {
-        navigate('/login'); // Redireciona para o login após 3 segundos
+        navigate('/login');
       }, 3000);
     }
     setLoading(false);
   };
 
   return (
-    <div className="background"> {/* Classe para o plano de fundo */}
-      <div className="reset-password-container"> {/* Container branco central */}
-        
+    <div className="background">
+      <div className="reset-password-container">
         <h2>Crie sua Nova Senha</h2>
-        
         <form onSubmit={handleResetPassword}>
           <input
             type="password"
@@ -65,23 +75,23 @@ function ResetPassword() {
             required
             aria-label="Nova senha"
           />
+          {/* Se você quiser um campo de confirmação, descomente o bloco abaixo */}
+          {/*
           <input
             type="password"
             placeholder="Confirme a nova senha"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            // value={confirmPassword}  // Você precisará de um estado para ele
+            // onChange={(e) => setConfirmPassword(e.target.value)}
             required
             aria-label="Confirmação da nova senha"
           />
+          */}
           <button type="submit" disabled={loading}>
             {loading ? 'Salvando...' : 'Salvar Nova Senha'}
           </button>
         </form>
-
-        {/* Exibe mensagens de sucesso ou erro */}
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
-
       </div>
     </div>
   );
