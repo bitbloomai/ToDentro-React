@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // 1. Adicionado o useEffect aqui
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 
@@ -12,25 +12,6 @@ function ResetPassword() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // 2. ESTE É O BLOCO DE CÓDIGO ADICIONADO PARA CORRIGIR O ERRO
-  // Ele "escuta" as mudanças de estado de autenticação do Supabase.
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      // O evento 'PASSWORD_RECOVERY' é disparado quando o usuário chega
-      // na página através de um link de recuperação de senha.
-      // Neste ponto, a sessão segura e temporária já foi estabelecida.
-      if (event === "PASSWORD_RECOVERY") {
-        console.log("Sessão de recuperação de senha estabelecida. Pronto para atualizar.");
-      }
-    });
-
-    // Função de limpeza para remover o "ouvinte" quando o componente é desmontado.
-    return () => {
-      authListener?.subscription?.unsubscribe();
-    };
-  }, []); // O array vazio [] garante que este efeito rode apenas uma vez.
-
-  
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
@@ -47,11 +28,14 @@ function ResetPassword() {
     setMessage('');
     setError('');
 
+    // A sessão já terá sido estabelecida pelo listener principal no App.js
+    // quando esta função for chamada.
     const { error } = await supabase.auth.updateUser({
       password: password,
     });
 
     if (error) {
+      // O erro agora deve ser genuíno (ex: token realmente expirado por tempo)
       setError('Não foi possível redefinir a senha. A sessão pode ter expirado.');
       console.error('Erro detalhado do Supabase:', error);
     } else {

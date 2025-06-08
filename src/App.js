@@ -71,7 +71,6 @@ function App() {
         />
         
         {/* Suas outras rotas */}
-        <Route path="/forgot-password" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
