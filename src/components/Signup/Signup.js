@@ -1,6 +1,8 @@
+// src/Signup/Signup.js
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import './Signup.css';
 
 // Importação do Logo
@@ -10,121 +12,105 @@ function Signup() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // 1. ADIÇÃO: Estado para o campo 'Confirmar Senha' que estava faltando.
+    const [confirmPassword, setConfirmPassword] = useState('');
+    
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSignup = async (event) => {
+    const handleSignUp = async (event) => {
         event.preventDefault();
         setLoading(true);
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        if (password !== confirmPassword) {
+            setErrorMessage('As senhas não coincidem.');
+            setLoading(false); // Para o processo de loading
+            return; // Interrompe a função para não continuar com o cadastro
+        }
+
         const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
         });
 
         if (error) {
-            alert(error.error_description || error.message);
+            setErrorMessage(error.message);
         } else {
-            // O Supabase envia um e-mail de confirmação por padrão.
-            alert('Cadastro realizado! Verifique seu e-mail para confirmar a conta.');
+            setSuccessMessage('Cadastro realizado! Verifique seu e-mail para confirmar a conta.');
         }
         setLoading(false);
     };
 
     return (
-        <div className="signup-container">
-            <h1>Crie sua conta</h1>
-            <form onSubmit={handleSignup}>
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    placeholder="Seu email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <label htmlFor="password">Senha</label>
-                <input
-                    id="password"
-                    type="password"
-                    placeholder="Sua senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Cadastrando...' : 'Cadastrar'}
-                </button>
-            </form>
+        <div className="background" id="signup-background">
+            <div className="frame-signup">
+                <img src={logo} alt="Logo ToDentro" className="logo-signup" />
+                <hr className="linha-signup" />
+
+                {/* Mensagens de erro e sucesso */}
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
+                {successMessage && <div className="success-message">{successMessage}</div>}
+
+                <form onSubmit={handleSignUp} className="formulario-signup">
+                    <label htmlFor="email">Seu E-mail</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="exemplo@email.com"
+                        className="input-email" // Mantive sua classe
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        disabled={loading}
+                    />
+
+                    <label htmlFor="password">Crie uma Senha</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="••••••••"
+                        className="input-senha" // Mantive sua classe
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        disabled={loading}
+                    />
+
+                    <label htmlFor="confirmPassword">Confirme sua Senha</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="••••••••"
+                        className="input-senha" // Mantive sua classe
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                        disabled={loading}
+                    />
+
+                    <button
+                        type="submit"
+                        className={`botao-signup ${loading ? 'loading' : ''}`}
+                        disabled={loading}
+                    >
+                        {/* Usei o seu texto, mas a lógica de loading continua a mesma */}
+                        <span className="button-text">{loading ? 'Cadastrando...' : 'Cadastrar'}</span>
+                    </button>
+                </form>
+
+                <div className="links-extras">
+                    <p>
+                        Já tem uma conta?{' '}
+                        <Link to="/login" className="link-login">
+                            Login
+                        </Link>
+                    </p>
+                </div>
+            </div>
         </div>
     );
 }
 
-  return (
-    <div className="background" id="signup-background">
-      <div className="frame-signup">
-        <img src={logo} alt="Logo ToDentro" className="logo-signup" />
-        <hr className="linha-signup" />
-
-        {/* Exibe a mensagem de erro ou sucesso */}
-        {error && <div className="message error-message">{error}</div>}
-        {successMessage && <div className="message success-message">{successMessage}</div>}
-
-        <form onSubmit={handleSignUp} className="formulario-signup">
-          <label htmlFor="email">Seu E-mail</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="exemplo@email.com"
-            className="input-email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={isLoading}
-          />
-
-          <label htmlFor="password">Crie uma Senha</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="••••••••"
-            className="input-senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={isLoading}
-          />
-
-          <label htmlFor="confirmPassword">Confirme sua Senha</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            placeholder="••••••••"
-            className="input-senha"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            disabled={isLoading}
-          />
-
-          <button
-            type="submit"
-            className={`botao-signup ${isLoading ? 'loading' : ''}`}
-            disabled={isLoading}
-          >
-            <span className="button-text">Cadastrar</span>
-          </button>
-        </form>
-
-        <div className="links-extras">
-          <p>
-            Já tem uma conta?{' '}
-            <Link to="/login" className="link-login">
-              Login
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-
-
-export default SignUp;
+export default Signup;

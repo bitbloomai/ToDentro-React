@@ -8,7 +8,7 @@ import {
 
 // 2. NOVO: Importe o hook de navegação e o cliente supabase
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../supabaseClient'; // Ajuste o caminho se necessário
+import { supabase } from '../../../supabaseClient';
 
 // O componente NavItem (sem alterações)
 const NavItem = ({ icon, label, sectionId, activeSection, onClick }) => (

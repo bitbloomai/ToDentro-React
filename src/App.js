@@ -8,9 +8,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 
 // Seus componentes de página
-import Home from './Home/Home'; // Corrigi o caminho baseado na sua estrutura
-import Login from './Login/Login'; // Corrigi o caminho
-import SignUp from './Signup/Signup'; // Corrigi o caminho
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
+import SignUp from './components/Signup/Signup'; 
 import Dashboard from './components/Dashboard/Dashboard';
 
 import './App.css'; 
