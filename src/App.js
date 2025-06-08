@@ -1,53 +1,73 @@
 // src/App.js
 
-import React from 'react';
+// 1. Importe os hooks 'useState' e 'useEffect' do React
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// 1. Importe os componentes de página que você criou
-import Home from './components/Home/Home';
-import Login from './components/Login/Login';
-import SignUp from './components/Signup/Signup';
+// 2. Importe o cliente Supabase que criamos
+import { supabase } from './supabaseClient';
+
+// Seus componentes de página
+import Home from './Home/Home'; // Corrigi o caminho baseado na sua estrutura
+import Login from './Login/Login'; // Corrigi o caminho
+import SignUp from './Signup/Signup'; // Corrigi o caminho
 import Dashboard from './components/Dashboard/Dashboard';
 
-// (Opcional) Importe um arquivo de CSS global, se tiver
 import './App.css'; 
 
-// Um componente simples para páginas não encontradas (404)
+// Componente de página não encontrada (mantido como está)
 function NotFound() {
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h1>404 - Página Não Encontrada</h1>
       <p>A página que você está procurando não existe.</p>
-      {/* O <Link> é melhor, mas Navigate funciona para um redirecionamento simples */}
       <a href="/">Voltar para a Home</a>
     </div>
   );
 }
 
-
 function App() {
+  // 3. Estado para guardar a sessão do usuário. Se for 'null', ele não está logado.
+  const [session, setSession] = useState(null);
+
+  // 4. useEffect para verificar a sessão quando o app carrega e ouvir mudanças
+  useEffect(() => {
+    // Pega a sessão ativa na primeira vez que o app carrega
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    // Ouve em tempo real as mudanças na autenticação (login, logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
+    // Limpa a inscrição quando o componente App é "desmontado"
+    return () => subscription.unsubscribe();
+  }, []); // O array vazio [] garante que isso só rode uma vez na montagem do componente
+
   return (
-    // 2. O BrowserRouter é o cérebro que gerencia o roteamento
     <BrowserRouter>
-      {/* 3. O Routes funciona como um "switch" que exibe apenas uma rota por vez */}
       <Routes>
-        {/* Rota para a Página Inicial */}
+        {/* Rotas Públicas */}
         <Route path="/" element={<Home />} />
-
-        {/* Rota para a Página de Login */}
         <Route path="/login" element={<Login />} />
-
-        {/* Rota para a Página de Cadastro */}
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Rota para o Dashboard */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* 5. LÓGICA DA ROTA PROTEGIDA 
+          - Se 'session' existir (usuário logado), renderiza o <Dashboard />.
+          - Se 'session' for nulo, redireciona o usuário para a página de login.
+          - O "/*" no path permite que o Dashboard tenha suas próprias sub-rotas (ex: /dashboard/perfil).
+        */}
+        <Route 
+          path="/dashboard/*" 
+          element={session ? <Dashboard /> : <Navigate to="/login" />} 
+        />
         
-        {/* Rota para o link "Esqueceu sua senha?" da página de Login */}
-        {/* Ela aponta para uma página de "Não encontrado" por enquanto */}
+        {/* Suas outras rotas */}
         <Route path="/forgot-password" element={<NotFound />} />
-
-        {/* Rota "Coringa": Se nenhuma das rotas acima corresponder, exibe a página 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

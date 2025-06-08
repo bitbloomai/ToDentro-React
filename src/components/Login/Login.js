@@ -1,40 +1,63 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // useNavigate para redirecionar após o login
-import './Login.css'; // Importar o CSS
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import './Login.css';
 
 // Importação do Logo
 import logo from '../../assets/images/logo-cabeçalho.png';
-// Importe seu cliente Supabase aqui (se configurado em um arquivo separado)
-// import { supabase } from '../../supabaseClient'; 
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Hook para redirecionamento
+    const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate(); // Hook para navegação
 
-  const handleLogin = async (event) => {
-    event.preventDefault(); // Impede o recarregamento da página
-    setIsLoading(true);
-    setError('');
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
 
-    try {
-      // Simula uma chamada de API
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      if (email === "teste@email.com" && password === "123456") {
-        console.log("Login simulado com sucesso!");
-        navigate('/dashboard'); // Redireciona para a página principal após o login
-      } else {
-        throw new Error("E-mail ou senha inválidos.");
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        if (error) {
+            alert(error.error_description || error.message);
+        } else {
+            // Se o login for bem-sucedido, o onAuthStateChange (que vamos configurar no App.js)
+            // vai detectar a sessão e o redirecionamento ocorrerá.
+            navigate('/dashboard'); // Redireciona para o dashboard
+        }
+        setLoading(false);
+    };
+  }
+    return (
+        <div className="login-container">
+            <h1>Login</h1>
+            <form onSubmit={handleLogin}>
+                <label htmlFor="email">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="Seu email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <label htmlFor="password">Senha</label>
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Sua senha"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Entrando...' : 'Entrar'}
+                </button>
+            </form>
+        </div>
+    );
 
   return (
     <div className="background" id="login-background">
@@ -95,6 +118,6 @@ function Login() {
       </div>
     </div>
   );
-}
+
 
 export default Login;

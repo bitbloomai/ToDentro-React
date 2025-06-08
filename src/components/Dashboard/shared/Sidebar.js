@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faQrcode, faChartBar, faImages, faUserPlus, faCog,
-  faUser, faPalette, faHeadset 
+  faUser, faPalette, faHeadset,
+  faSignOutAlt // 1. NOVO: Importe o ícone de logout
 } from '@fortawesome/free-solid-svg-icons';
 
-// O componente NavItem foi criado para evitar repetição de código
+// 2. NOVO: Importe o hook de navegação e o cliente supabase
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../supabaseClient'; // Ajuste o caminho se necessário
+
+// O componente NavItem (sem alterações)
 const NavItem = ({ icon, label, sectionId, activeSection, onClick }) => (
   <button
     className={`nav-item ${activeSection === sectionId ? 'active' : ''}`}
@@ -18,6 +23,13 @@ const NavItem = ({ icon, label, sectionId, activeSection, onClick }) => (
 
 function Sidebar({ activeSection, setActiveSection }) {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const navigate = useNavigate(); // NOVO
+
+  // 3. NOVO: Adicione a função de logout
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
+  };
 
   return (
     <aside className="sidebar">
@@ -30,9 +42,15 @@ function Sidebar({ activeSection, setActiveSection }) {
 
       <div className="sidebar-bottom">
         <div className={`settings-menu ${isSettingsOpen ? 'active' : ''}`}>
-           <NavItem icon={faUser} label="Perfil" sectionId="perfil" activeSection={activeSection} onClick={setActiveSection} />
-           <NavItem icon={faPalette} label="Personalização" sectionId="personalizacao" activeSection={activeSection} onClick={setActiveSection} />
-           <NavItem icon={faHeadset} label="Suporte" sectionId="suporte" activeSection={activeSection} onClick={setActiveSection} />
+            <NavItem icon={faUser} label="Perfil" sectionId="perfil" activeSection={activeSection} onClick={setActiveSection} />
+            <NavItem icon={faPalette} label="Personalização" sectionId="personalizacao" activeSection={activeSection} onClick={setActiveSection} />
+            <NavItem icon={faHeadset} label="Suporte" sectionId="suporte" activeSection={activeSection} onClick={setActiveSection} />
+            
+            {/* 4. NOVO: O botão de logout */}
+            <button className="nav-item" onClick={handleLogout}>
+              <FontAwesomeIcon icon={faSignOutAlt} />
+              <span>Sair</span>
+            </button>
         </div>
         <button className="settings-btn" onClick={() => setSettingsOpen(!isSettingsOpen)}>
           <FontAwesomeIcon icon={faCog} />
