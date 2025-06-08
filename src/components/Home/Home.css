@@ -362,9 +362,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
   flex-wrap: wrap;
-  padding: 60px 20px;
+  padding: 60px 50px 0 0;
 }
 
 .imagem-contato {
@@ -372,6 +371,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: flex-end; 
 }
 
 .imagem-contato img {
@@ -386,27 +386,32 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-right: 110px;
   text-align: center;
 }
 
 .texto-contato h2 {
   font-weight: 600;
-  font-size: 40px;
+  font-size: 35px;
   color: #4D4D4D;
 }
 
 .informacoes-contato {
   flex: 2 1 400px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 70px 70px; 
 }
 
+/* Itens da grade de contato */
 .informacao-contato {
   display: flex;
   align-items: center;
-  width: 250px; /* Largura fixa para melhor alinhamento */
+}
+
+.informacao-contato2 {
+  display: flex;
+  align-items: center;
 }
 
 .informacao-contato img {
@@ -415,11 +420,33 @@
   margin-right: 10px;
 }
 
+.informacao-contato2 img {
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+}
+
 .informacao-contato span {
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
   color: #4D4D4D;
 }
+
+.informacao-contato2 span {
+  font-weight: 700;
+  font-size: 16px;
+  color: #4D4D4D;
+}
+
+/* Media query para responsividade em celulares */
+@media (max-width: 600px) {
+  .informacoes-contato {
+    /* Em telas pequenas, a grade passa a ter apenas 1 coluna */
+    grid-template-columns: 1fr;
+    gap: 25px; 
+  }
+}
+
 
 /* Frase de Efeito Section */
 .frase-efeito-section {

@@ -19,32 +19,6 @@ function Login() {
     setIsLoading(true);
     setError('');
 
-    /*
-    // --- LÓGICA REAL COM SUPABASE (EXEMPLO) ---
-    // Substitua o bloco 'try/catch' abaixo por este quando for integrar com o Supabase
-    
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      // Se o login for bem-sucedido, redireciona para o dashboard
-      console.log('Login successful:', data);
-      navigate('/dashboard'); // ou para a rota que desejar
-
-    } catch (error) {
-      setError(error.message || 'Ocorreu um erro ao fazer login.');
-    } finally {
-      setIsLoading(false);
-    }
-    */
-
-    // --- LÓGICA DE SIMULAÇÃO (PODE REMOVER DEPOIS) ---
     try {
       // Simula uma chamada de API
       await new Promise(resolve => setTimeout(resolve, 1500));

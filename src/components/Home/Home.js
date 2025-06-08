@@ -36,6 +36,7 @@ function Home() {
 
   return (
     <div className="homepage-container">
+
       {/* # Cabeçalho */}
       <header className="header-section">
         <button className="header-logo" onClick={scrollToTop}>
@@ -135,7 +136,7 @@ function Home() {
           <h2>Fale Conosco!</h2>
         </div>
         <div className="informacoes-contato">
-          <div className="informacao-contato">
+          <div className="informacao-contato2">
             <img src={iconPhone} alt="Ícone do telefone" />
             <span>(32) 9 9952-6526</span>
           </div>
