@@ -42,7 +42,7 @@ function App() {
     // Ouve em tempo real as mudanças na autenticação (login, logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log(`EVENTO DO SUPABASE: ${event}`, session);
+        console.log(`EVENTO DO SUPABASE: ${Event}`, session);
         setSession(session);
       }
     );
