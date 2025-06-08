@@ -39,6 +39,7 @@ function ResetPassword() {
 
     if (error) {
       setError('Não foi possível redefinir a senha. O link pode ter expirado ou ser inválido.');
+      console.error('Erro detalhado do Supabase:', error);
       console.error('Error:', error.message);
     } else {
       setMessage('Senha redefinida com sucesso! Você será redirecionado para o login.');
