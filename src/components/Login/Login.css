@@ -32,9 +32,11 @@
 }
 
 .logo-login {
-  margin-top: 40px; /* Ajustado para melhor espaçamento */
+  margin-top: 15px; /* Ajustado para melhor espaçamento */
   width: 150px;
   height: auto;
+  border: none;
+  background-color: transparent;
 }
 
 .linha-login {

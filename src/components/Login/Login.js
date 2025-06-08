@@ -36,7 +36,11 @@ function Login() {
     return (
         <div className="background" id="login-background">
             <div className="frame-login">
-                <img src={logo} alt="Logo ToDentro" className="logo-login" />
+                <Link to="/">
+                            <button className="logo-login">
+                                <img src={logo} alt="Logo ToDentro" className="logo-login" />
+                            </button>
+                          </Link>
                 <hr className="linha-login" />
 
                 {/* A exibição da mensagem de erro já estava correta. */}
