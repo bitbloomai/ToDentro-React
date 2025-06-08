@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+a, a:link, a:visited {
+  text-decoration: none; /* A mágica acontece aqui: remove o sublinhado */
+  color: var(--primary-color); /* Exemplo: usa sua cor primária. Mude se precisar. */
+  font-weight: bold; /* Opcional: deixa o texto em negrito, dando mais destaque */
+  transition: opacity 0.2s ease-in-out; /* Opcional: efeito suave no hover */
+}
+
+/* Opcional: Adiciona um efeito sutil quando o mouse passa por cima */
+a:hover {
+  opacity: 0.8; /* Deixa o link um pouco mais claro no hover */
+}
+
+/* Se quiser estilizar APENAS aqueles links específicos, 
+  você pode usar as classes que já criou:
+*/
+.link-login, .link-cadastro {
+  text-decoration: none;
+  font-weight: bold;
+  /* color: #SUA_COR_ESPECIFICA; */
+}
