@@ -1,0 +1,189 @@
+/* src/sections/Personalizacao.css - Atualizado */
+
+.personalizacao-container {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Espaço entre os cards */
+}
+
+/* Estilo base para cada "card" de configuração */
+.customization-card {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.customization-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho do Card (título e ícone) */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.card-header .icon {
+    color: var(--primary-color);
+}
+
+.card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Corpo do Card (onde ficam os controles) */
+.card-body {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+}
+
+
+/* ---- NOVOS ESTILOS ---- */
+
+/* Campo de input para o Nome da Empresa */
+.company-name-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+.company-name-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(127, 168, 105, 0.2);
+}
+
+
+/* Formulário para adicionar novo campo personalizado */
+.add-field-form {
+    width: 100%;
+}
+.add-field-form input {
+    flex-grow: 1; /* Faz o input ocupar o máximo de espaço */
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+.add-field-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Botão de ação genérico */
+.btn-action {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    white-space: nowrap; /* Impede que o texto do botão quebre linha */
+}
+.btn-action:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Lista de campos personalizados já criados */
+.custom-fields-list {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.custom-field-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.custom-field-item span {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.btn-delete-field {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1; /* Para alinhar o ícone perfeitamente */
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.btn-delete-field:hover {
+    background-color: #FEE2E2; /* Fundo vermelho claro */
+    color: #EF4444; /* Ícone vermelho */
+    transform: scale(1.1);
+}
+
+
+/* Botão Principal de Submit */
+.btn-submit-personalizacao {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+}
+
+.btn-submit-personalizacao:hover {
+    background-color: #6a8f5a; /* Tom mais escuro */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(127, 168, 105, 0.4);
+}
+
+.form-group-full {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.form-group-full > label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.color-input-wrapper {
+    border-radius: 5px;
+}
