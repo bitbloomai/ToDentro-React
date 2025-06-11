@@ -8,7 +8,7 @@
 :root {
     --primary-color: #7FA869;
     --secondary-color: #0F5DA4;
-    --bg-color: #f5f5f5;
+    --bg-color: #ffffff;
     --sidebar-bg: #ffffff;
     --text-color: #333333;
     --text-light: #666666;
@@ -166,8 +166,19 @@ body {
 /* Content Area */
 .content {
     flex: 1;
-    padding: 2rem;
     overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: 50px;  
+    margin-bottom: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.content > * {
+    max-width: 100%;
 }
 
 .section {
@@ -234,7 +245,7 @@ body {
 
 .checkin-area {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
     margin-bottom: 2rem;
 }
@@ -628,6 +639,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
+    max-width: 100%;
 }
 
 .support-card {
@@ -892,7 +904,6 @@ body {
 /* Chart container */
 .chart-container {
     background: white;
-    padding: 24px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     height: 400px;
