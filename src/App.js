@@ -1,23 +1,24 @@
 // src/App.js
 
-// 1. Importe os hooks 'useState' e 'useEffect' do React
+// 1. Importações do React e do Roteador
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// 2. Importe o cliente Supabase que criamos
+// 2. Importe o cliente Supabase e o nosso novo ProfileProvider
 import { supabase } from './supabaseClient';
+import { ProfileProvider } from './context/ProfileContext'; // <<< ADICIONADO AQUI
 
-// Seus componentes de página
+// 3. Seus componentes de página
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
-import SignUp from './components/Signup/Signup'; 
+import SignUp from './components/Signup/Signup';
 import Dashboard from './components/Dashboard/Dashboard';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 
-import './App.css'; 
+import './App.css';
 
-// Componente de página não encontrada (mantido como está)
+// Componente de página não encontrada
 function NotFound() {
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -29,27 +30,32 @@ function NotFound() {
 }
 
 function App() {
-  // 3. Estado para guardar a sessão do usuário. Se for 'null', ele não está logado.
   const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true); // Estado para saber se a sessão inicial já foi verificada
 
-  // 4. useEffect para verificar a sessão quando o app carrega e ouvir mudanças
   useEffect(() => {
     // Pega a sessão ativa na primeira vez que o app carrega
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setLoading(false); // Marca que a verificação inicial terminou
     });
 
-    // Ouve em tempo real as mudanças na autenticação (login, logout)
+    // Ouve em tempo real as mudanças na autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log(`EVENTO DO SUPABASE: ${Event}`, session);
         setSession(session);
       }
     );
 
-    // Limpa a inscrição quando o componente App é "desmontado"
+    // Limpa a inscrição
     return () => subscription.unsubscribe();
-  }, []); // O array vazio [] garante que isso só rode uma vez na montagem do componente
+  }, []);
+
+  // Enquanto a sessão inicial estiver sendo verificada, pode-se mostrar um loader
+  if (loading) {
+      return <div>Carregando...</div>; // Ou um componente de spinner mais elaborado
+  }
+
 
   return (
     <BrowserRouter>
@@ -61,17 +67,23 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* 5. LÓGICA DA ROTA PROTEGIDA 
-          - Se 'session' existir (usuário logado), renderiza o <Dashboard />.
-          - Se 'session' for nulo, redireciona o usuário para a página de login.
-          - O "/*" no path permite que o Dashboard tenha suas próprias sub-rotas (ex: /dashboard/perfil).
-        */}
-        <Route 
-          path="/dashboard/*" 
-          element={session ? <Dashboard /> : <Navigate to="/login" />} 
+        {/* ROTA PROTEGIDA COM O CONTEXTO */}
+        <Route
+          path="/dashboard/*"
+          element={
+            session ? (
+              // Se o usuário está logado, envolvemos o Dashboard com o ProfileProvider
+              <ProfileProvider>
+                <Dashboard />
+              </ProfileProvider>
+            ) : (
+              // Se não está logado, redireciona para o login
+              <Navigate to="/login" />
+            )
+          }
         />
-        
-        {/* Suas outras rotas */}
+
+        {/* Rota para página não encontrada */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

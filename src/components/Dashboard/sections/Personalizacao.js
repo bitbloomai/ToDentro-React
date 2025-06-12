@@ -1,60 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignature, faPalette, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { supabase } from '../../../supabaseClient'; // Verifique o caminho
-import './Personalizacao.css'; // Usaremos o mesmo CSS
+import { faSignature, faPalette, faPlus, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { supabase } from '../../../supabaseClient';
+import { useProfile } from '../../../context/ProfileContext'; // 1. Importa o hook do contexto
+import './Personalizacao.css';
 
 function Personalizacao() {
-  const [companyName, setCompanyName] = useState('');
-  // State para as cores está de volta!
-  const [colors, setColors] = useState({
-    primary: '#7FA869',
-    secondary: '#0F5DA4',
-  });
+  // 2. Puxa os dados e funções do contexto, em vez de usar o estado local para eles
+  const { companyName, setCompanyName, colors, setColors, refreshProfile } = useProfile();
+  
+  // O estado local agora é usado apenas para o que é específico deste componente
   const [customFields, setCustomFields] = useState([]);
   const [newFieldLabel, setNewFieldLabel] = useState('');
   const [notification, setNotification] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Efeito para buscar TODAS as personalizações ao carregar
+  // Efeito para buscar apenas os campos personalizados.
+  // O nome e as cores já são gerenciados pelo ProfileContext.
   useEffect(() => {
-    async function fetchCustomizations() {
+    async function fetchCustomFields() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        // Busca o nome da empresa e as cores salvas
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('company_name, primary_color, secondary_color')
-          .eq('id', user.id)
-          .single();
-        
-        if (profileData) {
-          setCompanyName(profileData.company_name || '');
-          // Se houver cores salvas, usa-as. Senão, mantém as padrões.
-          setColors({
-            primary: profileData.primary_color || '#7FA869',
-            secondary: profileData.secondary_color || '#0F5DA4',
-          });
-        }
-
-        // Busca os campos personalizados
         const { data: fieldsData } = await supabase.from('custom_fields').select('*').eq('user_id', user.id);
         if (fieldsData) setCustomFields(fieldsData);
       }
     }
-    fetchCustomizations();
+    fetchCustomFields();
   }, []);
 
-  // Efeito para APLICAR as cores dinamicamente na interface
-  useEffect(() => {
-    document.documentElement.style.setProperty('--primary-color', colors.primary);
-    document.documentElement.style.setProperty('--secondary-color', colors.secondary);
-  }, [colors]);
-
-
-  const handleColorChange = (e) => {
-    setColors({ ...colors, [e.target.id]: e.target.value });
-  };
-
+  // Funções para adicionar e deletar campos continuam as mesmas
   const handleAddField = async () => {
     if (newFieldLabel.trim() === '') return;
     const { data: { user } } = await supabase.auth.getUser();
@@ -73,12 +47,16 @@ function Personalizacao() {
     if (error) console.error('Erro ao deletar campo:', error);
     else setCustomFields(customFields.filter(field => field.id !== fieldId));
   };
-
-  // Salva TODAS as alterações (nome da empresa E cores)
+  
+  // 3. Função de salvar agora atualiza o Supabase e depois o contexto global
   const handleSaveChanges = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+        setIsSaving(false);
+        return;
+    };
 
     const profileUpdates = {
       company_name: companyName,
@@ -93,13 +71,16 @@ function Personalizacao() {
       console.error("Erro ao salvar:", error);
     } else {
       setNotification('Alterações salvas com sucesso!');
+      await refreshProfile(); // Recarrega os dados do perfil em toda a aplicação
     }
+    
+    setIsSaving(false);
     setTimeout(() => setNotification(''), 3000);
   };
 
   return (
     <section className="section active" id="personalizacao">
-      {notification && <div className="notification success show">{notification}</div>}
+      {notification && <div className={`notification success show`}>{notification}</div>}
 
       <form className="personalizacao-container" onSubmit={handleSaveChanges}>
         
@@ -117,8 +98,8 @@ function Personalizacao() {
                 type="text" 
                 className="company-name-input"
                 placeholder="Digite o nome que aparecerá no cabeçalho"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
+                value={companyName} // 4. Valor vem do contexto
+                onChange={(e) => setCompanyName(e.target.value)} // Atualiza o valor no contexto
               />
             </div>
             {/* Seção das Cores */}
@@ -128,13 +109,13 @@ function Personalizacao() {
                 <div className="color-item">
                   <label htmlFor="primary">Primária</label>
                   <div className="color-input-wrapper">
-                    <input type="color" id="primary" value={colors.primary} onChange={handleColorChange} />
+                    <input type="color" id="primary" value={colors.primary} onChange={(e) => setColors({...colors, primary: e.target.value})} />
                   </div>
                 </div>
                 <div className="color-item">
                   <label htmlFor="secondary">Secundária</label>
                   <div className="color-input-wrapper">
-                    <input type="color" id="secondary" value={colors.secondary} onChange={handleColorChange} />
+                    <input type="color" id="secondary" value={colors.secondary} onChange={(e) => setColors({...colors, secondary: e.target.value})} />
                   </div>
                 </div>
               </div>
@@ -142,7 +123,7 @@ function Personalizacao() {
           </div>
         </div>
 
-        {/* Card para Campos Personalizados */}
+        {/* Card para Campos Personalizados (lógica interna não muda) */}
         <div className="customization-card">
           <div className="card-header">
             <FontAwesomeIcon icon={faPlus} className="icon" />
@@ -151,7 +132,7 @@ function Personalizacao() {
           <div className="add-field-form">
             <input 
               type="text" 
-              className="company-name-input" /* Reutilizando o estilo */
+              className="company-name-input"
               placeholder="Nome do novo campo (ex: Tamanho da Camiseta)"
               value={newFieldLabel}
               onChange={(e) => setNewFieldLabel(e.target.value)}
@@ -170,7 +151,9 @@ function Personalizacao() {
           </div>
         </div>
 
-        <button type="submit" className="btn-submit-personalizacao">Salvar Alterações Gerais</button>
+        <button type="submit" className="btn-submit-personalizacao" disabled={isSaving}>
+          {isSaving ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Salvar Alterações Gerais'}
+        </button>
       </form>
     </section>
   );
