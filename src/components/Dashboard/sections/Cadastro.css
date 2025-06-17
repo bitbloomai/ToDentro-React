@@ -24,6 +24,8 @@
 #cadastro h2 {
     font-size: 1.5rem;
     font-weight: 600;
+    padding-left: 20px;
+    padding-top: 10px;
     color: var(--text-color);
     margin-bottom: 0;
     padding-bottom: 1rem;

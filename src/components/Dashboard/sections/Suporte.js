@@ -13,7 +13,7 @@ function Suporte() {
   return (
     <section className="section active" id="suporte">
       <h2>Suporte</h2>
-      <p style={{marginBottom: '2rem', maxWidth: '800px'}}>Precisa de ajuda? Entre em contato conosco através de um dos canais abaixo. Nossa equipe está pronta para te atender!</p>
+      <p style={{paddingLeft: '20px', marginBottom: '2rem', maxWidth: '800px'}}>Precisa de ajuda? Entre em contato conosco através de um dos canais abaixo. Nossa equipe está pronta para te atender!</p>
       
       <div className="support-content">
         <div className="support-card">

@@ -234,7 +234,7 @@ function Cadastro() {
         />
       )}
 
-      <h2>Cadastro de Pessoas</h2>
+      <h2> Cadastro de Pessoas</h2>
       
       <form className="cadastro-form" onSubmit={handleSubmit}>
         {/* ... o restante do formulário continua igual ... */}
