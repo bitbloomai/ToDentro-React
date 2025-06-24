@@ -271,17 +271,37 @@ function Checkin({ onAddVisitor }) {
   // --- EVENT HANDLERS ---
   const updateCheckinStatus = async (personId, status) => {
     setIsUpdatingStatus(true);
-    const { error } = await supabase
+
+    // 1. Atualiza o status na tabela 'registrations' (como já fazia)
+    const { error: updateError } = await supabase
       .from('registrations')
       .update({ checked_in: status })
       .eq('id', personId);
 
-    setIsUpdatingStatus(false);
-    if (error) {
-      console.error('Erro ao atualizar status de check-in:', error);
+    if (updateError) {
+      console.error('Erro ao atualizar status:', updateError);
       showNotification(`Erro ao ${status ? 'realizar check-in' : 'realizar check-out'}.`, 'error');
+      setIsUpdatingStatus(false);
       return false;
     }
+
+    // 2. (NOVO) Insere o evento na tabela de log
+    const { data: { user } } = await supabase.auth.getUser();
+    const { error: logError } = await supabase
+      .from('checkin_log')
+      .insert({
+        user_id: user.id,
+        registration_id: personId,
+        event_type: status ? 'checkin' : 'checkout'
+      });
+    
+    if (logError) {
+        // Mesmo que o log falhe, o check-in principal funcionou.
+        // Apenas avisamos no console.
+        console.error('Erro ao registrar o log do evento:', logError);
+    }
+
+    setIsUpdatingStatus(false);
     return true;
   };
 
