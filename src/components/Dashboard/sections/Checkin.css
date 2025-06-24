@@ -22,7 +22,9 @@
     /* ALTERADO: Alinhando o max-width com o do componente Cadastro (900px)
        ou com a largura máxima do seu container de dashboard.
        Ajuste este valor se o seu dashboard tiver uma largura diferente. */
-    max-width: 900px;
+   max-width: 1200px;
+       width:auto;
+    min-width: 80vw;
     margin: 0 auto; /* Centraliza o container */
     display: flex;
     flex-direction: column;
@@ -141,12 +143,13 @@
     .checkin-area {
         grid-template-columns: 1fr; /* Uma única coluna */
     }
+
     .search-and-add {
         flex-direction: column; /* Empilha a busca e o botão */
         align-items: stretch; /* Estica os itens para preencher a largura */
     }
     .search-box, .btn-add-visitor {
-        width: 100%; /* Ocupa 100% da largura disponível */
+       width: 100%; /* Ocupa 100% da largura disponível */
         flex: none; /* Desabilita o flex grow/shrink */
     }
 }

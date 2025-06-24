@@ -37,6 +37,8 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+
+    font-size: 8px;
 }
 
 .logo-todentro {
@@ -56,9 +58,43 @@ body {
     overflow: hidden;
 }
 
+.sidebar.collapsed {
+    width: 80px;
+    /* já está assim por padrão */
+}
+
+.sidebar:not(.collapsed) {
+    width: 240px;
+}
+
+.hamburger-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+    color: #7FA869;
+}
+
+.nav-item span {
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+.sidebar.collapsed .nav-item span {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
 /* Sidebar */
 .sidebar {
-    width: 250px;
+    position: fixed;
+    z-index: 999;
+    height: 90vh;
+    width: 80px;
     background: var(--sidebar-bg);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -114,7 +150,7 @@ body {
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    padding: 1rem;
+    padding: 0;
     background: rgba(0, 0, 0, 0.05);
     border-radius: 10px;
 }
@@ -168,22 +204,23 @@ body {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    min-width: 0;
-    max-width: 100%;
+    width: 100%;
     box-sizing: border-box;
-    margin-top: 50px;  
-    margin-bottom: 50px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 50px 0 50px 80px;
+    width: auto;
 }
 
-.content > * {
-    max-width: 100%;
+.content>* {
+    /* max-width: 100%; */
 }
 
 .section {
     display: none;
+    width: 98%;
+    padding: 0 10px;
     animation: fadeIn 0.3s ease;
+
+
 }
 
 .section.active {
@@ -195,6 +232,7 @@ body {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -264,7 +302,8 @@ body {
     gap: 1rem;
 }
 
-.btn-clear, .btn-download {
+.btn-clear,
+.btn-download {
     padding: 1rem 2rem;
     border: none;
     border-radius: 10px;
@@ -292,7 +331,8 @@ body {
     margin-bottom: 2rem;
 }
 
-.btn-upload, .btn-remove {
+.btn-upload,
+.btn-remove {
     padding: 1rem 2rem;
     border: none;
     border-radius: 10px;
@@ -382,7 +422,8 @@ body {
     padding: 1rem;
 }
 
-.btn-upload-logo, .btn-bg-image {
+.btn-upload-logo,
+.btn-bg-image {
     padding: 0.75rem 1.5rem;
     background: var(--secondary-color);
     color: white;
@@ -496,6 +537,7 @@ body {
         transform: translateY(-50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -531,33 +573,23 @@ body {
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        left: -250px;
-        height: 100%;
-        z-index: 999;
-    }
-    
-    .sidebar.active {
-        left: 0;
-    }
-    
+
     .main-container {
         flex-direction: column;
     }
-    
+
     .content {
-        padding: 1rem;
+        padding: 0;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .checkin-area {
         grid-template-columns: 1fr;
     }
-    
+
     .report-controls {
         flex-direction: column;
         align-items: stretch;
@@ -699,33 +731,74 @@ body {
     .dashboard-container {
         grid-template-columns: 1fr;
     }
-    
-    .sidebar {
-        position: fixed;
-        left: -280px;
-        top: 0;
-        height: 100vh;
-        z-index: 999;
-        transition: left 0.3s ease;
-    }
-    
-    .sidebar.mobile-open {
-        left: 0;
-    }
-    
+
     .header {
         padding: 16px;
     }
-    
+
     .company-logo {
         max-width: 100px;
     }
-    
+
     .content-section {
         padding: 16px;
     }
-    
+
     .form-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Hamburguer no header para mobile */
+.hamburger-header {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-right: 1rem;
+    display: none;
+    color: #7FA869;
+}
+
+@media (max-width: 450px) {
+    .hamburger-header {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100%;
+        width: 250px;
+        z-index: 999;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.mobile-open {
+        left: 0;
+    }
+
+    .close-mobile-sidebar {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--text-color);
+        cursor: pointer;
+        padding: 1rem;
+        width: 100%;
+        color: #7FA869;
+        text-align: left;
+
+        padding: 30px 0 0 30px;
+    }
+
+    .content {
+        margin: 0;
+    }
+
+    .section h2{
+        text-align: center;
     }
 }

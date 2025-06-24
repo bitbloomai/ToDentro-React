@@ -132,6 +132,8 @@ function Home() {
         <div className="imagem-contato left">
           <img src={contatoImage} alt="Imagem de contato" />
         </div>
+
+      <div className='contato-content'>
         <div className="texto-contato">
           <h2>Fale Conosco!</h2>
         </div>
@@ -152,6 +154,7 @@ function Home() {
             <img src={iconInsta} alt="Ícone do Instagram" />
             <span>@bitbloomai</span>
           </div>
+        </div>
         </div>
       </section>
 
