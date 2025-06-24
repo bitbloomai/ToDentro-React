@@ -20,6 +20,13 @@ function Dashboard() {
   const [activeSection, setActiveSection] = useState('checkin');
   const [isModalOpen, setModalOpen] = useState(false);
 
+  // sidebar
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
+
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+
   // Função para renderizar a seção ativa
   const renderSection = () => {
     switch (activeSection) {
@@ -45,9 +52,18 @@ function Dashboard() {
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Header />
+        <Header setMobileSidebarOpen={setMobileSidebarOpen} />
         <div className="main-container">
-          <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+          <Sidebar
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+            isCollapsed={isSidebarCollapsed}
+            toggleSidebar={toggleSidebar}
+            isMobileSidebarOpen={isMobileSidebarOpen}
+            setMobileSidebarOpen={setMobileSidebarOpen}
+          />
+
+
           <main className="content">
             {renderSection()}
           </main>
