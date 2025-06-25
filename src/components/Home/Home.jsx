@@ -20,6 +20,9 @@ import iconInsta from '../../assets/icons/Icone - Insta.svg';
 import instaIconRP from '../../assets/icons/Insta Icon RP.svg';
 import webIconRP from '../../assets/icons/Web Icon RP.svg';
 
+import checkX from "../../assets/images/checkX.png"
+import checkV from "../../assets/images/checkV.png"
+
 function Home() {
   // Função para rolar suavemente para uma seção
   const scrollToSection = (sectionId) => {
@@ -124,7 +127,49 @@ function Home() {
           <h2>Nossos Planos</h2>
           <h2 className="verde">E Preços!</h2>
         </div>
-        <img src={precosImage} alt="Imagem de preços" className="imagem-precos" />
+        {/* <img src={precosImage} alt="Imagem de preços" className="imagem-precos" /> */}
+        <div className='cards-elements'>
+          <div className='card-element'>
+            <h2>Gratuíto</h2>
+            <div className='card-checklist'>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Autenticação</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Gerenciamento</p></div>
+              <div className='checklist-element'> <img className='card-price-img' src={checkX} alt="" /><p>Limite de participantes</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkX} alt="" /><p>Relatórios limitados</p></div>
+            </div>
+            <button className='card-button'>
+              <span>R$ </span>00,00
+            </button>
+          </div>
+
+           <div className='card-element'>
+            <h2>Profissional</h2>
+            <div className='card-checklist'>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Autenticação</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Gerenciamento</p></div>
+              <div className='checklist-element'> <img className='card-price-img' src={checkV} alt="" /><p>Sem limites</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Relatórios completos</p></div>
+            </div>
+            <button className='card-button'>
+              <span>R$ </span>120,00
+            </button>
+          </div>
+
+           <div className='card-element'>
+            <h2>Empresarial</h2>
+            <div className='card-checklist'>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Autenticação</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Gerenciamento</p></div>
+              <div className='checklist-element'> <img className='card-price-img' src={checkV} alt="" /><p>Sem limites</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Relatórios completos</p></div>
+              <div className='checklist-element'><img className='card-price-img' src={checkV} alt="" /><p>Integração externa</p></div>
+            </div>
+            <button className='card-button wr-alt'>
+             Sob Consulta 
+            </button>
+          </div>
+
+        </div>
       </section>
 
       {/* # Contato */}
@@ -133,28 +178,28 @@ function Home() {
           <img src={contatoImage} alt="Imagem de contato" />
         </div>
 
-      <div className='contato-content'>
-        <div className="texto-contato">
-          <h2>Fale Conosco!</h2>
-        </div>
-        <div className="informacoes-contato">
-          <div className="informacao-contato2">
-            <img src={iconPhone} alt="Ícone do telefone" />
-            <span>(32) 9 9952-6526</span>
+        <div className='contato-content'>
+          <div className="texto-contato">
+            <h2>Fale Conosco!</h2>
           </div>
-          <div className="informacao-contato">
-            <img src={iconMail} alt="Ícone do email" />
-            <span>bitbloomai@gmail.com</span>
+          <div className="informacoes-contato">
+            <div className="informacao-contato2">
+              <img src={iconPhone} alt="Ícone do telefone" />
+              <span>(32) 9 9952-6526</span>
+            </div>
+            <div className="informacao-contato">
+              <img src={iconMail} alt="Ícone do email" />
+              <span>bitbloomai@gmail.com</span>
+            </div>
+            <div className="informacao-contato">
+              <img src={iconGlobo} alt="Ícone do endereço" />
+              <span>bitbloomai.com</span>
+            </div>
+            <div className="informacao-contato">
+              <img src={iconInsta} alt="Ícone do Instagram" />
+              <span>@bitbloomai</span>
+            </div>
           </div>
-          <div className="informacao-contato">
-            <img src={iconGlobo} alt="Ícone do endereço" />
-            <span>bitbloomai.com</span>
-          </div>
-          <div className="informacao-contato">
-            <img src={iconInsta} alt="Ícone do Instagram" />
-            <span>@bitbloomai</span>
-          </div>
-        </div>
         </div>
       </section>
 

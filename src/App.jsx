@@ -53,7 +53,7 @@ function App() {
 
   // Enquanto a sessão inicial estiver sendo verificada, pode-se mostrar um loader
   if (loading) {
-      return <div>Carregando...</div>; // Ou um componente de spinner mais elaborado
+    return <div>Carregando...</div>; // Ou um componente de spinner mais elaborado
   }
 
 
