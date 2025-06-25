@@ -127,7 +127,6 @@ function Home() {
           <h2>Nossos Planos</h2>
           <h2 className="verde">E Preços!</h2>
         </div>
-        {/* <img src={precosImage} alt="Imagem de preços" className="imagem-precos" /> */}
         <div className='cards-elements'>
           <div className='card-element'>
             <h2>Gratuíto</h2>
