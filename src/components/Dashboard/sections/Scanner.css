@@ -108,3 +108,13 @@
 }
 .notification-scanner.success { background-color: #28a745; }
 .notification-scanner.error { background-color: #dc3545; }
+
+.scan-result.info { 
+    background-color: #E0F2FE; /* Azul claro */
+    border: 1px solid #7DD3FC; /* Borda azul */
+}
+
+.scan-result.info h4 {
+    color: #0369A1; /* Cor do texto do título azul escuro */
+}
+
