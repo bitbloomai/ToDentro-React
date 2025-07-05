@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignature, faPalette, faUserPlus, faPlus, faTrash, faSpinner, faAddressBook } from '@fortawesome/free-solid-svg-icons'; // Adicionado faUserPlus e faAddressBook
+import { faSignature, faUserPlus, faPlus, faTrash, faSpinner, faAddressBook } from '@fortawesome/free-solid-svg-icons'; // Adicionado faUserPlus e faAddressBook
 import { supabase } from '../../../supabaseClient';
 import { useProfile } from '../../../context/ProfileContext';
 import './Personalizacao.css'; // Não se esqueça de importar o CSS

@@ -1,0 +1,141 @@
+/* Estilos para a página de cadastro pública e tela de sucesso com QR Code */
+
+.public-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+.public-card, .qr-success-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.public-card h2, .qr-success-card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.public-card p, .qr-success-card p {
+    color: var(--text-light);
+    text-align: center;
+    margin: 0;
+}
+
+.public-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(127, 168, 105, 0.2);
+}
+
+.btn-submit-public {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.btn-submit-public:hover:not(:disabled) {
+    background-color: #6a8f5a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(127, 168, 105, 0.3);
+}
+
+.btn-submit-public:disabled {
+    background-color: var(--text-light);
+    cursor: not-allowed;
+}
+
+/* Tela de Sucesso com QR Code */
+.qr-success-card h2 svg {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.qr-success-card .instruction {
+    font-size: 0.95rem;
+    margin-top: 1rem;
+}
+
+.qr-code-wrapper {
+    margin: 1.5rem auto 0 auto;
+    padding: 1rem;
+    background: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    display: inline-block;
+}
+
+/* Loading Spinner */
+.loading-container {
+    text-align: center;
+    padding: 5rem;
+    color: var(--text-light);
+}
+
+.loading-container p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.btn-submit-public {
+    background-color: #7fa66f;
+}

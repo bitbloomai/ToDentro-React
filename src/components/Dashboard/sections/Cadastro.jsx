@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faEdit, faTrash, faSpinner, faFileCsv } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faShareAlt, faSave, faEdit, faTrash, faSpinner, faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '../../../supabaseClient'; // Verifique se o caminho está correto
 import './Cadastro.css'; // Não se esqueça de importar o CSS
+import '../Dashboard.css';
 
 // Componente para o modal de confirmação
 const ConfirmationModal = ({ message, onConfirm, onCancel }) => (
@@ -17,6 +18,12 @@ const ConfirmationModal = ({ message, onConfirm, onCancel }) => (
   </div>
 );
 
+// Componente para a notificação
+const Notification = ({ message, type, show }) => {
+    if (!show) return null;
+    return <div className={`notification ${type} show`}>{message}</div>;
+};
+
 function Cadastro() {
   // --- STATE MANAGEMENT ---
   const [people, setPeople] = useState([]);
@@ -26,6 +33,11 @@ function Cadastro() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
   const [modal, setModal] = useState({ isOpen: false, message: '', onConfirm: null });
+
+  // --- ESTADOS PARA O LINK DE CADASTRO ---
+  const [registrationLink, setRegistrationLink] = useState('');
+  const linkInputRef = useRef(null);
+  const [user, setUser] = useState(null); // Estado para armazenar o usuário
 
   // --- HELPER FUNCTIONS ---
   const resetForm = () => {
@@ -43,43 +55,55 @@ function Cadastro() {
     }, 3000);
   };
 
-  // --- DATA FETCHING ---
+  // --- DATA FETCHING (LÓGICA CORRIGIDA) ---
   useEffect(() => {
-    const fetchInitialData = async () => {
-      setIsLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
+    setIsLoading(true);
 
-      if (user) {
-        const { data: fieldsData, error: fieldsError } = await supabase
-          .from('custom_fields')
-          .select('*')
-          .eq('user_id', user.id);
-        
-        if (fieldsError) {
-          console.error('Erro ao buscar campos personalizados:', fieldsError);
-          showNotification('Falha ao carregar campos personalizados.', 'error');
-        } else {
-          setCustomFields(fieldsData || []);
-        }
+    // Usamos onAuthStateChange para obter o usuário e ouvir mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        const currentUser = session?.user || null;
+        setUser(currentUser); // <<-- CORREÇÃO PRINCIPAL: Atualiza o estado do usuário
 
-        const { data: peopleData, error: peopleError } = await supabase
-          .from('registrations')
-          .select('*')
-          .eq('user_id', user.id);
-          
-        if (peopleError) {
-            console.error('Erro ao buscar pessoas cadastradas:', peopleError);
-            showNotification('Falha ao carregar pessoas cadastradas.', 'error');
+        if (currentUser) {
+            // Busca os dados apenas se houver um usuário logado
+            const { data: fieldsData, error: fieldsError } = await supabase
+                .from('custom_fields')
+                .select('*')
+                .eq('user_id', currentUser.id);
+            
+            if (fieldsError) {
+                console.error('Erro ao buscar campos personalizados:', fieldsError);
+                showNotification('Falha ao carregar campos personalizados.', 'error');
+            } else {
+                setCustomFields(fieldsData || []);
+            }
+
+            const { data: peopleData, error: peopleError } = await supabase
+                .from('registrations')
+                .select('*')
+                .eq('user_id', currentUser.id);
+                
+            if (peopleError) {
+                console.error('Erro ao buscar pessoas cadastradas:', peopleError);
+                showNotification('Falha ao carregar pessoas cadastradas.', 'error');
+            } else {
+                setPeople(peopleData || []);
+            }
         } else {
-            setPeople(peopleData || []);
+            // Limpa os dados se o usuário fizer logout
+            setCustomFields([]);
+            setPeople([]);
         }
-      }
-      setIsLoading(false);
+        setIsLoading(false);
+    });
+
+    // Limpa a inscrição ao desmontar o componente para evitar vazamentos de memória
+    return () => {
+        subscription?.unsubscribe();
     };
+  }, []); // O array vazio garante que isso rode apenas uma vez na montagem
 
-    fetchInitialData();
-  }, []);
-
+  // Reseta o formulário quando os campos personalizados são carregados
   useEffect(() => {
     resetForm();
   }, [customFields]);
@@ -96,8 +120,9 @@ function Cadastro() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
+    // Re-valida o usuário no momento do envio por segurança
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
+    if (!currentUser) {
         showNotification('Você precisa estar logado para cadastrar.', 'error');
         setIsSubmitting(false);
         return;
@@ -116,7 +141,7 @@ function Cadastro() {
     });
 
     const newRegistration = {
-        user_id: user.id,
+        user_id: currentUser.id,
         ...standardData,
         custom_data: customData
     };
@@ -162,21 +187,37 @@ function Cadastro() {
     setModal({ isOpen: false, message: '', onConfirm: null });
   };
 
-  // --- NOVA FUNÇÃO DE EXPORTAÇÃO ---
+  // --- FUNÇÕES PARA O LINK (Agora funcionará corretamente) ---
+  const generateRegistrationLink = () => {
+      if (user && user.id) { // Verifica se o objeto user e seu id existem
+          const link = `${window.location.origin}/register-public/${user.id}`;
+          setRegistrationLink(link);
+      } else {
+          showNotification('Usuário não encontrado. Faça login novamente.', 'error');
+      }
+  };
+
+  const copyLinkToClipboard = () => {
+      if(linkInputRef.current) {
+        linkInputRef.current.select();
+        document.execCommand('copy');
+        showNotification('Link copiado para a área de transferência!');
+      }
+  };
+
+  // --- FUNÇÃO DE EXPORTAÇÃO ---
   const handleExportCSV = () => {
     if (people.length === 0) {
         showNotification("Não há dados para exportar.", "error");
         return;
     }
 
-    // Cria os cabeçalhos dinamicamente
     const standardHeaders = ['Nome', 'Email', 'Telefone'];
     const customHeaders = customFields.map(field => field.field_label);
     const headers = [...standardHeaders, ...customHeaders];
     
-    // Converte os dados para o formato CSV
     const csvContent = [
-        headers.join(','), // Linha de cabeçalho
+        headers.join(','),
         ...people.map(person => {
             const standardValues = [
                 `"${person.nome || ''}"`,
@@ -185,15 +226,14 @@ function Cadastro() {
             ];
             const customValues = customHeaders.map(header => {
                 const value = person.custom_data ? person.custom_data[header] || '' : '';
-                return `"${value}"`; // Coloca todos os valores entre aspas para tratar vírgulas
+                return `"${value}"`;
             });
 
             return [...standardValues, ...customValues].join(',');
         })
     ].join('\n');
 
-    // Cria e dispara o download do arquivo
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' }); // Adicionado BOM para compatibilidade com Excel
     const link = document.createElement("a");
     if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
@@ -213,19 +253,21 @@ function Cadastro() {
   if (isLoading) {
     return (
       <section className="section active" id="cadastro-loading">
-        <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-        <p>Carregando dados...</p>
+        <div className="loading-container">
+            <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+            <p>Carregando dados...</p>
+        </div>
       </section>
     );
   }
 
   return (
     <section className="section active" id="cadastro">
-      {notification.show && (
-          <div className={`notification ${notification.type} show`}>
-              {notification.message}
-          </div>
-      )}
+      <Notification 
+        show={notification.show} 
+        message={notification.message} 
+        type={notification.type} 
+      />
       {modal.isOpen && (
         <ConfirmationModal 
           message={modal.message}
@@ -237,7 +279,6 @@ function Cadastro() {
       <h2> Cadastro de Pessoas</h2>
       
       <form className="cadastro-form" onSubmit={handleSubmit}>
-        {/* ... o restante do formulário continua igual ... */}
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="nome">Nome Completo</label>
@@ -280,6 +321,7 @@ function Cadastro() {
                         onChange={handleInputChange} 
                     />
                 </div>
+                {/* Garante que a linha sempre tenha dois elementos para manter o layout */}
                 {customFields.slice(1)[index+1] ? null : <div className="form-group"></div>}
             </div>
         ))}
@@ -289,17 +331,32 @@ function Cadastro() {
         </button>
       </form>
 
+      <div className="link-generator-card">
+          <h3>Link de Cadastro Público</h3>
+          <p>Gere um link para que seus convidados possam se cadastrar sozinhos.</p>
+          <button className="btn-generate-link" onClick={generateRegistrationLink}>
+              <FontAwesomeIcon icon={faShareAlt} /> Gerar Link
+          </button>
+          {registrationLink && (
+              <div className="link-display">
+                  <input ref={linkInputRef} type="text" value={registrationLink} readOnly />
+                  <button className="btn-copy" onClick={copyLinkToClipboard} title="Copiar link">
+                      <FontAwesomeIcon icon={faCopy} />
+                  </button>
+              </div>
+          )}
+      </div>
+
       <div className="registered-people">
         <div className="registered-people-header">
             <h3>Pessoas Cadastradas</h3>
-            {/* --- BOTÃO DE EXPORTAÇÃO ADICIONADO AQUI --- */}
             <button className="btn-export" onClick={handleExportCSV} title="Exportar para CSV">
                 <FontAwesomeIcon icon={faFileCsv} />
                 Exportar CSV
             </button>
         </div>
         <div className="people-table-container">
-            <div className="people-table" style={{'--num-columns': 3 + customFields.length}}>
+            <div className="people-table" style={{'--num-columns': 4 + customFields.length}}>
                 <div className="person-row header">
                     <div>Nome</div>
                     <div>Email</div>

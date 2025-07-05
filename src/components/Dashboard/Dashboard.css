@@ -8,103 +8,74 @@
 :root {
     --primary-color: #7FA869;
     --secondary-color: #0F5DA4;
-    --bg-color: #ffffff;
+    --bg-color: #f8f9fa; /* Um cinza bem claro para o fundo */
     --sidebar-bg: #ffffff;
     --text-color: #333333;
     --text-light: #666666;
     --border-color: #e0e0e0;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     --transition: all 0.3s ease;
+    --sidebar-width: 250px; /* Largura da sidebar no desktop */
+    --header-height: 72px; /* Altura do header */
 }
 
-body {
+body, html, #root, .App {
+    height: 100%;
+    width: 100%;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    overflow: hidden; /* Impede a rolagem do body */
 }
 
-/* Header */
+/* --- ESTRUTURA DE LAYOUT COM CSS GRID (A SOLUÇÃO DEFINITIVA) --- */
+.dashboard-layout {
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: var(--header-height) 1fr auto; /* Linhas para header, conteúdo e footer */
+    grid-template-areas:
+        "header  header"
+        "sidebar content"
+        "footer  footer";
+}
+
+/* --- HEADER --- */
 .header {
+    grid-area: header;
     background: white;
-    padding: 1rem 2rem;
+    padding: 0 2rem;
     box-shadow: var(--shadow);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
     z-index: 100;
-
-    font-size: 8px;
 }
 
-.logo-todentro {
+.logo-todentro, .logo-empresa {
     height: 40px;
-}
-
-.logo-empresa {
-    height: 40px;
-    max-width: 200px;
     object-fit: contain;
 }
 
-/* Main Container */
-.main-container {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
-
-.sidebar.collapsed {
-    width: 80px;
-    /* já está assim por padrão */
-}
-
-.sidebar:not(.collapsed) {
-    width: 240px;
-}
-
-.hamburger-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 1rem;
-    width: 100%;
-    text-align: center;
-    color: #7FA869;
-}
-
-.nav-item span {
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-}
-
-.sidebar.collapsed .nav-item span {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-}
-
-/* Sidebar */
+/* --- SIDEBAR --- */
 .sidebar {
-    position: fixed;
-    z-index: 999;
-    height: 90vh;
-    width: 80px;
+    grid-area: sidebar;
     background: var(--sidebar-bg);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    transition: var(--transition);
+    overflow: hidden;
+}
+
+.hamburger-btn, .close-mobile-sidebar {
+    display: none;
 }
 
 .nav-menu {
-    padding: 2rem 1rem;
+    padding: 1rem;
     flex: 1;
+    overflow-y: auto;
 }
 
 .nav-item {
@@ -133,50 +104,37 @@ body {
     color: white;
 }
 
-.nav-item i {
-    font-size: 1.2rem;
-    width: 24px;
-    text-align: center;
-}
-
-/* Sidebar Bottom */
+/* --- MENU DE CONFIGURAÇÕES (POP-UP) --- */
 .sidebar-bottom {
     padding: 1rem;
     border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+    position: relative;
 }
 
 .settings-menu {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease-in-out;
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 1rem;
+    right: 1rem;
+    z-index: 10;
+    display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 0;
-    background: rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    background: var(--sidebar-bg);
     border-radius: 10px;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
 }
 
 .settings-menu.active {
-    display: flex;
-}
-
-.settings-submenu-item {
-    width: 100%;
-    padding: 0.75rem;
-    border: none;
-    background: white;
-    color: var(--text-color);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 0.9rem;
-}
-
-.settings-submenu-item:hover {
-    background: var(--secondary-color);
-    color: white;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .settings-btn {
@@ -199,28 +157,17 @@ body {
     color: var(--secondary-color);
 }
 
-/* Content Area */
+/* --- ÁREA DE CONTEÚDO --- */
 .content {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 50px 0 50px 80px;
-    width: auto;
-}
-
-.content>* {
-    /* max-width: 100%; */
+    grid-area: content;
+    overflow-y: auto; /* Permite rolagem vertical */
+    overflow-x: hidden; /* IMPEDE rolagem horizontal */
+    padding: 2rem;
 }
 
 .section {
-    display: none;
-    width: 98%;
-    padding: 0 10px;
+    width: 100%;
     animation: fadeIn 0.3s ease;
-
-
 }
 
 .section.active {
@@ -228,15 +175,8 @@ body {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .section h2 {
@@ -247,81 +187,103 @@ body {
     padding-top: 10px;
 }
 
-/* Relatórios Section */
-.report-controls {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    align-items: center;
+/* --- AJUSTES DE RESPONSIVIDADE DENTRO DO CONTEÚDO --- */
+
+/* Garante que imagens, vídeos, etc., não ultrapassem o container */
+.section img,
+.section iframe,
+.section video {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
-.select-report {
+/* Força a quebra de linha em containers flexíveis para evitar overflow */
+.report-controls, .gallery-controls {
+    flex-wrap: wrap;
+}
+
+/* Para tabelas de dados, que são um problema comum de responsividade.
+   Envolva sua tabela em um <div class="table-container"> para que ela
+   role horizontalmente sem quebrar o layout da página. */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Melhora a rolagem em iOS */
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+.report-table {
+    width: 100%;
+    min-width: 700px; /* Exemplo: define uma largura mínima para a tabela */
+    border-collapse: collapse;
+}
+
+
+/* --- FOOTER --- */
+.footer {
+    grid-area: footer;
+    background: white;
     padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 1rem;
-    background: white;
-    min-width: 300px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-light);
+    z-index: 1;
 }
 
-.view-options {
-    display: flex;
-    gap: 0.5rem;
+/* --- RESPONSIVIDADE (MOBILE) --- */
+.hamburger-header {
+    display: none;
 }
 
-.btn-view {
-    padding: 0.75rem 1.5rem;
-    border: 1px solid var(--border-color);
-    background: white;
-    color: var(--text-color);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+@media (max-width: 768px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "content"
+            "footer";
+    }
 
-.btn-view.active {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
+    .hamburger-header {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        cursor: pointer;
+        margin-right: 1rem;
+    }
 
-.report-display {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: var(--shadow);
-    min-height: 400px;
-    margin-bottom: 2rem;
-}
+    .sidebar {
+        grid-area: unset;
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100%;
+        width: 30%; /* Ocupa 30% da tela no mobile */
+        min-width: 200px; /* Garante que não fique muito estreito */
+        z-index: 1000;
+        transition: left 0.3s ease;
+        border-right: 1px solid var(--border-color);
+    }
 
-.report-actions {
-    display: flex;
-    gap: 1rem;
-}
-
-.btn-clear,
-.btn-download {
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-clear {
-    background: #e74c3c;
-    color: white;
-}
-
-.btn-download {
-    background: var(--secondary-color);
-    color: white;
+    .sidebar.mobile-open {
+        left: 0;
+    }
+    
+    .close-mobile-sidebar {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        cursor: pointer;
+        padding: 1.5rem;
+        text-align: right;
+    }
 }
 
 /* Galeria Section */
