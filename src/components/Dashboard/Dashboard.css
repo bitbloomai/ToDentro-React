@@ -25,7 +25,6 @@ body, html, #root, .App {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow: hidden; /* Impede a rolagem do body */
 }
 
 /* --- ESTRUTURA DE LAYOUT COM CSS GRID (A SOLUÇÃO DEFINITIVA) --- */
