@@ -1,80 +1,117 @@
+/* --- Container Principal --- */
 #scanner {
     max-width: 700px;
     margin: 0 auto;
     text-align: center;
 }
 
+/* Título da seção, alinhado com o estilo de #cadastro h2 */
 #scanner h2 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem; /* Espaço abaixo do título */
+    padding-bottom: 1rem; /* Espaçamento interno */
+    border-bottom: 1px solid var(--border-color); /* Borda inferior */
+    text-align: left; /* Alinhado à esquerda como no exemplo */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .scanner-instruction {
     color: var(--text-light);
     margin-bottom: 2rem;
+    text-align: left; /* Alinhado à esquerda para consistência */
 }
 
+/* --- Card Principal do Scanner --- */
 .scanner-container {
+    background: white;
     padding: 2rem;
     border-radius: 16px;
-    background: white;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
-    min-height: 350px;
+    min-height: 400px; /* Aumentado para melhor acomodação */
     display: flex;
+    flex-direction: column; /* Organiza os itens verticalmente */
     justify-content: center;
     align-items: center;
+    gap: 1.5rem; /* Espaço entre os elementos internos (resultado e botão) */
 }
 
 #qr-reader {
     width: 100%;
     max-width: 400px;
-    border: 4px dashed var(--border-color);
+    border: 3px dashed var(--border-color); /* Borda mais sutil */
     border-radius: 16px;
     overflow: hidden;
 }
 
+/* Feedback de carregamento */
 .scanner-feedback.loading {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
+/* --- Cards de Resultado do Scan --- */
 .scan-result {
     width: 100%;
     padding: 1.5rem;
     border-radius: 12px;
     text-align: left;
+    border: 1px solid;
 }
 
-.scan-result.valid { background-color: #E6F9F0; border: 1px solid #A3E9C3; }
-.scan-result.invalid { background-color: #FEE2E2; border: 1px solid #FCA5A5; }
+/* Cores consistentes com a paleta de exemplo */
+.scan-result.valid { background-color: #E6F9F0; border-color: #A3E9C3; }
+.scan-result.invalid { background-color: #FEE2E2; border-color: #FCA5A5; }
+.scan-result.info { background-color: #E0F2FE; border-color: #7DD3FC; }
 
 .scan-result h4 {
     margin-top: 0;
-    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
-.scan-result.valid h4 { color: #14532D; }
-.scan-result.invalid h4 { color: #991B1B; }
+.scan-result.valid h4 { color: #14532D; } /* Verde escuro */
+.scan-result.invalid h4 { color: #991B1B; } /* Vermelho escuro */
+.scan-result.info h4 { color: #0369A1; } /* Azul escuro */
+
+.scan-result p {
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+.result-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
 .result-details p {
-    margin: 0.5rem 0;
-    font-size: 1rem;
+    color: var(--text-color);
 }
-.result-details strong { color: var(--text-color); }
 
+.result-details strong {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* --- Botão para Escanear Novamente --- */
 .btn-rescan {
-    width: 100%;
-    margin-top: 1.5rem;
-    padding: 0.8rem 1.5rem;
+    align-self: center; /* Centraliza o botão no contêiner flex */
+    padding: 0.8rem 2rem;
     font-size: 1rem;
     font-weight: 600;
     background: var(--primary-color);
@@ -83,12 +120,21 @@
     border-radius: 10px;
     cursor: pointer;
     transition: var(--transition);
-}
-.btn-rescan:hover {
-    background-color: #6a8f5a;
+    display: inline-flex; /* Para alinhar com `align-self` */
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem; /* Espaço acima do botão */
 }
 
-/* Estilo para a notificação dentro do scanner para evitar conflitos */
+/* Efeito de hover idêntico ao .btn-submit */
+.btn-rescan:hover {
+    background-color: #6a8f5a; /* Tom mais escuro */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(127, 168, 105, 0.3);
+}
+
+/* --- Notificações --- */
+/* Mantido o estilo original, pois já é consistente e funcional */
 .notification-scanner {
     position: fixed;
     top: 20px;
@@ -97,24 +143,16 @@
     padding: 1rem 2rem;
     border-radius: 8px;
     color: white;
-    z-index: 1002; /* Z-index maior para aparecer sobre outros elementos */
+    z-index: 1002;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     opacity: 0;
     transition: opacity 0.3s, top 0.3s;
+    font-weight: 500;
 }
 .notification-scanner.show {
     opacity: 1;
-    top: 90px; /* Posição um pouco mais abaixo para não cobrir o header do dashboard */
+    top: 90px; /* Posição para não cobrir o header do dashboard */
 }
 .notification-scanner.success { background-color: #28a745; }
 .notification-scanner.error { background-color: #dc3545; }
-
-.scan-result.info { 
-    background-color: #E0F2FE; /* Azul claro */
-    border: 1px solid #7DD3FC; /* Borda azul */
-}
-
-.scan-result.info h4 {
-    color: #0369A1; /* Cor do texto do título azul escuro */
-}
-
+.notification-scanner.info { background-color: #0d6efd; }
