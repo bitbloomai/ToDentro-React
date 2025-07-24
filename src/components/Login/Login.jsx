@@ -87,12 +87,6 @@ function Login() {
                     <Link to="/forgot-password" className="esqueceu-senha">
                         Esqueceu sua senha?
                     </Link>
-                    <p>
-                        Não tem uma conta?{' '}
-                        <Link to="/signup" className="link-cadastro">
-                            Cadastre-se
-                        </Link>
-                    </p>
                 </div>
             </div>
         </div>

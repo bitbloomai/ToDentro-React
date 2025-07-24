@@ -57,9 +57,6 @@ function Home() {
           <Link to="/login">
             <button className="header-login-btn">Login</button>
           </Link>
-          <Link to="/signup">
-            <button className="header-signup-btn">SignUp</button>
-          </Link>
         </div>
       </header>
 

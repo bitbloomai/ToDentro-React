@@ -92,18 +92,19 @@ html, body {
 
 /* Login Botão */
 .header-login-btn {
-  border: 1px solid #6d925f;
-  border-radius: 25px;
   width: 104px;
   height: 40px;
+  border-radius: 25px;
+  background-color: #7fa66f;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
-  font-size: 16px;
-  color: #7fa66f;
-  background: transparent;
-  cursor: pointer;
+  transition: background 0.2s;
 }
 
 /* SingUp Botão */
